@@ -1,9 +1,14 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Container } from "react-bootstrap";
+import Formulario from "./components/Formulario";
 
 function App() {
   return (
-    <div className="App">
-      
-    </div>
+    <Container className="App">
+      <h1 className="text-center">Veterinaria</h1>
+      <hr/>
+    <Formulario/>
+    </Container>
   );
 }
 
