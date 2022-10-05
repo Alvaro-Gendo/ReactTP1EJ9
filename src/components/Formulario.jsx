@@ -1,39 +1,47 @@
-import Citas from "./Citas"
+import Citas from "./Citas";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
 const Formulario = () => {
-    const citaLS = JSON.parse(localStorage.getItem("CitaKey")) || [];
-    const [mascota, setMascota] = useState("")
-    const [duenio, setduenio] = useState("")
-    const [fecha, setFecha] = useState("")
-    const [hora, setHora] = useState("")
-    const [sintoma, setSintoma] = useState("")
-    const [arregloCitas, setArregloCitas] = useState(citaLS)
+  const citaLS = JSON.parse(localStorage.getItem("CitaKey")) || [];
+  const [mascota, setMascota] = useState("");
+  const [duenio, setduenio] = useState("");
+  const [fecha, setFecha] = useState("");
+  const [hora, setHora] = useState("");
+  const [sintoma, setSintoma] = useState("");
+  const [arregloCitas, setArregloCitas] = useState(citaLS);
 
+  useEffect(() => {
+    localStorage.setItem("CitaKey", JSON.stringify(arregloCitas));
+  }, [arregloCitas]);
 
-      useEffect(()=>{
-        localStorage.setItem("CitaKey", JSON.stringify(arregloCitas))
-      },[arregloCitas])
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (
+      mascota.trim() === "" &&
+      duenio.trim() === "" &&
+      fecha.trim() === "" &&
+      hora.trim() === "" &&
+      sintoma.trim() === ""
+    ) {
+      alert("Falta completar datos");
+    } else {
+      let infoCliente = { mascota, duenio, fecha, hora, sintoma };
+      setArregloCitas([...arregloCitas, infoCliente]);
 
-
-    const handleSubmit = (e) =>{
-        e.preventDefault()
-        let infoCliente = {mascota, duenio, fecha, hora, sintoma}
-        setArregloCitas([...arregloCitas, infoCliente])
-
-        setMascota("")
-        setduenio("")
-        setFecha("")
-        setHora("")
-        setSintoma("")
+      setMascota("");
+      setduenio("");
+      setFecha("");
+      setHora("");
+      setSintoma("");
     }
+  };
 
-    const borrarCita = (nombre) =>{
-      let modCita = arregloCitas.filter((item) => (item !== nombre));
+  const borrarCita = (nombre) => {
+    let modCita = arregloCitas.filter((item) => item !== nombre);
 
-      setArregloCitas(modCita)
-    }
+    setArregloCitas(modCita);
+  };
 
   return (
     <>
@@ -69,7 +77,7 @@ const Formulario = () => {
               <Col sm={12} md={6} lg={6}>
                 <Form.Label>Fecha</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="date"
                   placeholder="dd/mm/yyyy"
                   required
                   minLength={8}
@@ -81,7 +89,7 @@ const Formulario = () => {
               <Col sm={12} md={6} lg={6}>
                 <Form.Label>Hora</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="time"
                   placeholder="hh:mm"
                   required
                   minLength={5}
